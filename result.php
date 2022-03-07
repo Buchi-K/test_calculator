@@ -1,10 +1,19 @@
-<?php
-//数字を受け取る//
-$num1 = $_POST["num1"];
-$num2 = $_POST["num2"];
-$answer = '';
-$operator = $_POST["operator"];
-?>
+<?
+$form = [];
+$error = [];
+$form['num1'] = filter_input(INPUT_POST, 'num1', FILTER_SANITIZE_NUMBER_INT);
+  if ($form['num1'] === '') {
+    $error['num1'] = 'blank';
+  }
+  $form['num2'] = filter_input(INPUT_POST, 'num2', FILTER_SANITIZE_NUMBER_INT);
+  if ($form['num2'] === '') {
+    $error['num2'] = 'blank';
+  }
+  $form['operator'] = filter_input(INPUT_POST, 'operator', FILTER_SANITIZE_SPECIAL_CHARS);
+  if ($form['operator'] === '') {
+    $error['operator'] = 'blank';
+  }
+  ?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -16,27 +25,22 @@ $operator = $_POST["operator"];
 </head>
 <body>
   <h2>計算結果</h2>
-  <?php 
-  if (!isset($num1) && !isset($num2) && !isset($operator)) {
-    header('Location: index.php');
-    exit();
-  } else {
-    switch ($operator) {
-      case '+':
-        $answer = $num1 + $num2;
-        break;
-      case '-':
-        $answer = $num1 - $num2;
-        break;
-      case '×':
-        $answer = $num1 * $num2;
-        break;
-      case '÷':
-        $answer = $num1 / $num2;
-        break;
-    };
-    echo round($answer, 2);
-  }
+  <?php
+  switch ($form['operator']) {
+    case '+':
+      $answer = $form['num1'] + $form['num2'];
+      break;
+    case '-':
+      $answer = $form['num1'] - $form['num2'];
+      break;
+    case '×':
+      $answer = $form['num1'] * $form['num2'];
+      break;
+    case '÷':
+      $answer = $form['num1'] / $form['num2'];
+      break;
+  };
+  echo round($answer, 2);
   ?>
   <br>
   <a href="index.php">再度計算する</a>
