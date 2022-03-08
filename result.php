@@ -1,19 +1,28 @@
 <?
+session_start();
+$_SESSION['form_int'];
+$_SESSION['error_int'];
 $form = [];
 $error = [];
-$form['num1'] = filter_input(INPUT_POST, 'num1', FILTER_SANITIZE_NUMBER_INT);
-  if ($form['num1'] === '') {
-    $error['num1'] = 'blank';
-  }
-  $form['num2'] = filter_input(INPUT_POST, 'num2', FILTER_SANITIZE_NUMBER_INT);
-  if ($form['num2'] === '') {
-    $error['num2'] = 'blank';
-  }
-  $form['operator'] = filter_input(INPUT_POST, 'operator', FILTER_SANITIZE_SPECIAL_CHARS);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $form['num1'] = $_POST['num1'];
+  if ($form['num1'] === "") {
+    $error['num1'] = "blank";
+  } 
+  $form['num2'] = $_POST['num2'];
+  if ($form['num2'] === "") {
+    $error['num2'] = "blank";
+  } 
+  $form['operator'] = $_POST['operator'];
   if ($form['operator'] === '') {
     $error['operator'] = 'blank';
-  }
-  ?>
+  } 
+}
+
+$form_int = array_map('intval', $form);
+$error_int = array_map('intval', $error);
+
+?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -26,21 +35,21 @@ $form['num1'] = filter_input(INPUT_POST, 'num1', FILTER_SANITIZE_NUMBER_INT);
 <body>
   <h2>計算結果</h2>
   <?php
-  switch ($form['operator']) {
-    case '+':
-      $answer = $form['num1'] + $form['num2'];
+  switch ($form_int['operator']) {
+    case '1':
+      $answer = $form_int['num1'] + $form_int['num2'];
       break;
-    case '-':
-      $answer = $form['num1'] - $form['num2'];
+    case '2':
+      $answer = $form_int['num1'] - $form_int['num2'];
       break;
-    case '×':
-      $answer = $form['num1'] * $form['num2'];
+    case '3':
+      $answer = $form_int['num1'] * $form_int['num2'];
       break;
-    case '÷':
-      $answer = $form['num1'] / $form['num2'];
+    case '4':
+      $answer = $form_int['num1'] / $form_int['num2'];
       break;
   };
-  echo round($answer, 2);
+  echo $answer;
   ?>
   <br>
   <a href="index.php">再度計算する</a>
