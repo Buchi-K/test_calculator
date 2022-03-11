@@ -1,31 +1,38 @@
 <?php
-session_start();
-$form = [];
-$error = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $form['num1'] = $_POST['num1'];
-  if ($form['num1'] === "") {
-    $error['num1'] = "blank";
-  } 
-  $form['num2'] = $_POST['num2'];
-  if ($form['num2'] === "") {
-    $error['num2'] = "blank";
-  } 
-  $form['operator'] = $_POST['operator'];
-  if ($form['operator'] === '') {
-    $error['operator'] = 'blank';
-  } 
-}
-
-$form_int = array_map('intval', $form);
-$_SESSION['form_int'] = $form_int;
-$error_int = array_map('intval', $error);
-$_SESSION['error_int'] = $error_int;
-
-if (isset($form_int['num1']) && isset($form_int['num2']) && isset($form_int['operator'])) {
-    header('Location: result.php');
+  $num1 = $_POST['num1'];
+  $num2 = $_POST['num2'];
+  $ope = $_POST['ope'];
+  $num1_int = intval($num1);
+  $num2_int = intval($num2);
+  $ope_int = intval($ope);
+  // $_SESSION['num1'] = $num1_int;
+  // $_SESSION['num2'] = $num2_int;
+  // $_SESSION['ope'] = $ope_int;
+  if (isset($num1_int) && isset($num2_int) && $ope_int) {
+    switch ($ope_int) {
+      case '+':
+        $answer = $num1_int + $num2_int;
+        break;
+      case '-':
+        $answer = $num1_ - $num2_int;
+        break;
+      case '*':
+        $answer = $num1_int * $num2_int;
+        break;
+      case '/':
+        $answer = $num1_int / $num2_int;
+        break;
+    }
   }
-
+  if (isset($answer)) {
+    echo round($answer, 2);
+  }
+  if ($num1 === '' || $num2 === '') {
+    echo '数字を入力して下さい';
+  }
+  echo $answer;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -43,16 +50,13 @@ if (isset($form_int['num1']) && isset($form_int['num2']) && isset($form_int['ope
       <input type="string" name="num1" value="">
       <input type="string" name="num2" value="">
       <!-- 片っぽだけでも入力されていればいいことになっているから修正 -->
-      <?php
-      if (isset($error['num1']) &&  $error['num1'] === 'blank' && isset($error['num2']) && $error['num2'] === 'blank'): ?>
-        <p class='error'>* 数字の入力は必須です</p>
-      <?php endif; ?>
+      
         <h2>計算方法を選んでください</h2>
-        <select type='string' name="operator" value="">
-          <option value="1">+</option>
-          <option value="2">-</option>
-          <option value="3">×</option>
-          <option value="4">÷</option>
+        <select type='string' name="ope" value="">
+          <option value="+">+</option>
+          <option value="-">-</option>
+          <option value="*">×</option>
+          <option value="/">÷</option>
         </select>
       <br>
       <input type="submit" name="button" value="計算する">
