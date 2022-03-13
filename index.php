@@ -25,6 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       case '/':
         $answer = $num1_int / $num2_int;
         break;
+      case '%':
+        $answer = $num1_int % $num2_int;
+        if ($num2_int > $answer) {
+          $answer = $num2_int % $answer;
+        }
+        break;
     }
   }
   if (isset($answer)) {
@@ -53,11 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- 片っぽだけでも入力されていればいいことになっているから修正 -->
       
         <h2>計算方法を選んでください</h2>
-        <select type='string' name="ope" value="">
+        <select type='text' name="ope" value="">
           <option value="+">+</option>
           <option value="-">-</option>
           <option value="*">×</option>
           <option value="/">÷</option>
+          <option value="%">最大公約数</option>
         </select>
       <br>
       <input type="submit" name="button" value="計算する">
