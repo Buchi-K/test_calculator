@@ -1,21 +1,23 @@
 <?php
+$answer = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $num1 = $_POST['num1'];
   $num2 = $_POST['num2'];
   $ope = $_POST['ope'];
   $num1_int = intval($num1);
   $num2_int = intval($num2);
-  $ope_int = intval($ope);
+  // $ope_int = intval($ope);
   // $_SESSION['num1'] = $num1_int;
   // $_SESSION['num2'] = $num2_int;
   // $_SESSION['ope'] = $ope_int;
-  if (isset($num1_int) && isset($num2_int) && $ope_int) {
-    switch ($ope_int) {
+  if (isset($num1_int) && isset($num2_int) && $ope) {
+    switch ($ope) {
       case '+':
         $answer = $num1_int + $num2_int;
         break;
       case '-':
-        $answer = $num1_ - $num2_int;
+        $answer = $num1_int - $num2_int;
         break;
       case '*':
         $answer = $num1_int * $num2_int;
@@ -31,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($num1 === '' || $num2 === '') {
     echo '数字を入力して下さい';
   }
-  echo $answer;
 }
 ?>
 <!DOCTYPE html>
